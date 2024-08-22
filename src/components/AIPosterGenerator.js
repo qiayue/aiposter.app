@@ -138,8 +138,7 @@ export default function AIPosterGenerator() {
     <Card className="max-w-4xl mx-auto">
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-center text-blue-600"><a href="https://aiposter.app/">AIPoster.app</a></CardTitle>
-        <p className="text-center text-gray-600">AI Poster Generator</p>
-        <p className="text-center">Open Source <a href="https://github.com/qiayue/aiposter.app">Github</a></p>
+        <p className="text-center text-gray-600">Free AI Poster Generator Online.</p>
       </CardHeader>
       <CardContent>
         {isEditMode ? (
