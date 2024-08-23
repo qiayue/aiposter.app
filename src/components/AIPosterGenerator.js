@@ -16,7 +16,7 @@ export default function AIPosterGenerator() {
   const [gridHeight, setGridHeight] = useState(12);
   const [bgColor, setBgColor] = useState('#1608f9');
   const [texts, setTexts] = useState([]);
-  const [newText, setNewText] = useState({ content: '', color: '#0a037d', size: 30, x: 1, y: 1 });
+  const [newText, setNewText] = useState({ content: '', color: '#01037d', size: 30, x: 1, y: 1 });
   const [selectedTextId, setSelectedTextId] = useState(null);
   const [generatedImage, setGeneratedImage] = useState(null);
   const [isEditMode, setIsEditMode] = useState(true);
@@ -55,7 +55,7 @@ export default function AIPosterGenerator() {
       setTexts([...texts, { ...newText, id: newId, x: 1, y: newY }]);
       setNewText({ 
         content: '', 
-        color: '#0a037d', 
+        color: '#01037d', 
         size: 30, 
         x: 1, 
         y: texts.length + 1 // 为下一个新文字预设 y 坐标
@@ -162,32 +162,42 @@ export default function AIPosterGenerator() {
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2 ">
               <Label>添加新文字</Label>
-              <div className="flex space-x-2">
+              <div className="flex space-x-2 col-span-2 grid grid-cols-6 gap-2">
                 <Input
                   type="text"
                   placeholder="文字内容"
                   value={newText.content}
                   onChange={(e) => setNewText({ ...newText, content: e.target.value })}
-                  className="flex-grow"
+                  className="flex-grow col-span-3"
                 />
                 <Input
                   type="number"
                   placeholder="大小"
                   value={newText.size}
                   onChange={(e) => setNewText({ ...newText, size: Number(e.target.value) })}
-                  className="w-15"
+                  className="col-span-1"
                 />
-                <ColorSelect textId="new" currentColor={newText.color} updateText={(_, __, value) => setNewText({ ...newText, color: value })} />
-                <Button onClick={addText}><Plus className="h-4 w-4" /></Button>
+                <ColorSelect className="col-span-1" textId="new" currentColor={newText.color} updateText={(_, __, value) => setNewText({ ...newText, color: value })} />
+                <Button className="col-span-1" onClick={addText}><Plus className="h-4 w-4" /></Button>
               </div>
+            </div>
+
+
+            <div className="relative">
+              <canvas 
+                ref={canvasRef} 
+                width={gridWidth * getGridSize()} 
+                height={gridHeight * getGridSize()} 
+                className="border border-gray-300 w-full h-auto"
+              />
             </div>
 
             <div className="space-y-2">
               <Label>文字列表</Label>
-              <div className="grid grid-cols-5 gap-2 font-bold text-sm text-gray-600 mb-2">
-                <div className="col-span-1">内容</div>
+              <div className="grid grid-cols-7 gap-2 font-bold text-sm text-gray-600 mb-2">
+                <div className="col-span-3">内容</div>
                 <div>大小</div>
                 <div>颜色</div>
                 <div>X</div>
@@ -197,13 +207,13 @@ export default function AIPosterGenerator() {
                 <div key={text.id} 
                      className={`space-y-2 p-1 rounded-lg ${selectedTextId === text.id ? 'bg-blue-100 border-2 border-blue-500' : 'bg-gray-50'}`}
                      onClick={() => setSelectedTextId(text.id)}>
-                  <div className="grid grid-cols-5 gap-2 items-center">
+                  <div className="grid grid-cols-7 gap-2 items-center">
                     <Input
                       type="text"
                       placeholder="文字内容"
                       value={text.content}
                       onChange={(e) => updateText(text.id, 'content', e.target.value)}
-                      className="col-span-1"
+                      className="col-span-3"
                     />
                     <Input
                       type="number"
@@ -231,14 +241,6 @@ export default function AIPosterGenerator() {
               ))}
             </div>
 
-            <div className="relative">
-              <canvas 
-                ref={canvasRef} 
-                width={gridWidth * getGridSize()} 
-                height={gridHeight * getGridSize()} 
-                className="border border-gray-300 w-full h-auto"
-              />
-            </div>
 
             <Button onClick={generateImage} className="w-full">
               <Image className="mr-2 h-4 w-4" /> 生成图片
